@@ -1,14 +1,26 @@
+import useUser  from '@/store/user'
 import {
 	createRouter,
 	createWebHistory
 } from 'vue-router';
 
+
 const routes = [
 
 	{
+		path: '/auth',
+		meta: {
+			requiresNotAuth: true
+		},
+		component: () => import( /* webpackChunkName: 'index' */ './components/AuthComponent.vue')
+	},
+	{
 		path: '/',
 		name: 'root',
-		component: () => import( /* webpackChunkName: 'index' */ './components/AuthComponent.vue')
+		meta: {
+			requiresAuth: true
+		},
+		component: () => import( /* webpackChunkName: 'index' */ './components/HomeComponent.vue')
 	},
 ];
 const router = createRouter({
@@ -18,4 +30,25 @@ const router = createRouter({
 		document.getElementById('app').scrollIntoView();
 	}
 });
+router.beforeEach((to) => {
+	const user = useUser()
+	// this route requires auth, check if logged in
+	if (to.meta.requiresAuth && Object.keys({...user.currentUser}).length === 0 ) {
+		console.log('user is not logged in', {...user.currentUser});
+		// redirect to login page.
+		return {
+			path: '/auth',
+		
+		}
+	}
+	// this route requires to be not authenticated
+	if(to.meta.requiresNotAuth && Object.keys({...user.currentUser}).length !== 0){
+		console.log('user is logged in', {...user.currentUser});
+		// redirect to home page
+		return {
+			path: '/',
+		}
+	}
+})
+
 export default router;
