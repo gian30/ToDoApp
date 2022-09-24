@@ -20,7 +20,8 @@
 			@click="openAddTaskDialog()" />
 		<el-dialog v-model="dialogVisible" :title="editTaskMode ? 'Edit task' : 'Add task'" width="350px"
 			:before-close="handleClose">
-			<el-input v-model="textarea" maxlength="30" minlength="5" placeholder="Please input" :validate-event="true" type="textarea" show-word-limit />
+			<el-input v-model="textarea" maxlength="30" minlength="5" placeholder="Please input" :validate-event="true"
+				type="textarea" show-word-limit />
 			<template #footer>
 				<span class="dialog-footer">
 					<el-button @click="dialogVisible = false">Cancel</el-button>
@@ -31,8 +32,8 @@
 	</div>
 </template>
 <script setup>
-import Task from '../store/task';
-import User from '../store/user';
+import Task from '../store/task'
+import User from '../store/user'
 import {
 	Plus, Delete, Edit
 } from '@element-plus/icons-vue'
@@ -40,7 +41,6 @@ import {
 <script>
 
 import { mapActions, mapState } from 'pinia'
-import { supabase } from '@/supabase';
 
 export default {
 
@@ -54,36 +54,38 @@ export default {
 	},
 	methods: {
 		...mapActions(Task, ['fetchTasks']),
+		...mapActions(Task, ['add']),
+		...mapActions(Task, ['update']),
+		...mapActions(Task, ['remove']),
 		saveClick() {
 			if (this.editTaskMode) {
 				this.editTask()
 			} else {
-				this.addTask();
+				this.addTask()
 			}
-			
-			this.dialogVisible = false;
+
+			this.dialogVisible = false
 		},
 		async addTask() {
-			this.tasks.push({
-				title: this.textarea,
-				is_complete: false
-			})
-			await supabase.from('tasks').insert([{
+			const task = {
 				title: this.textarea,
 				is_complete: false,
 				user_id: this.currentUser.id
-			}])
+			}
+			this.add(task)
 		},
 		async editTask() {
 			if (this.editTaskIndex === -1 || !this.tasks[this.editTaskIndex] || this.editTaskMode === false) {
-				return;
+				return
 			}
-			console.log(this.tasks[this.editTaskIndex])
-			await supabase.from('tasks').update({
-				title: this.textarea
-			}).eq('id', this.tasks[this.editTaskIndex].id)
-			this.tasks[this.editTaskIndex].title = this.textarea
-	
+			const task = this.tasks[this.editTaskIndex]
+			task.title = this.textarea
+			this.update(task, this.editTaskIndex)
+		},
+		async markIsComplete(index, is_complete) {
+			const task = this.tasks[index]
+			task.is_complete = !is_complete
+			this.update(task, index)
 		},
 		openAddTaskDialog() {
 			this.textarea = ''
@@ -97,17 +99,14 @@ export default {
 			this.dialogVisible = true
 		},
 		async removeTask(index) {
-			await supabase.from('tasks').delete().eq('id', this.tasks[index].id)
-			this.tasks.splice(index, 1)
+			this.remove(index)
 		},
-		async markIsComplete(index, is_complete) {
-			await supabase.from('tasks').update({ is_complete: !is_complete }).eq('id', this.tasks[index].id)
-			this.tasks[index].is_complete = !is_complete
-		},
+
 	},
 	created() {
-		this.fetchTasks();
-	}, computed: {
+		this.fetchTasks()
+	}, 
+	computed: {
 		...mapState(Task, ['tasks']),
 		...mapState(User, ['currentUser']),
 		textareaValid() {
