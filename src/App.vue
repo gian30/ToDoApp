@@ -1,7 +1,19 @@
+
+
+
 <template>
-	<HeaderComponent></HeaderComponent>
-	<router-view />
+	<div class="common-layout">
+		<el-container>
+			<el-header>
+				<HeaderComponent></HeaderComponent>
+			</el-header>
+			<el-main style="padding: 0">
+				<router-view />
+			</el-main>
+		</el-container>
+	</div>
 </template>
+
 
 <script>
 import { mapActions, mapState } from 'pinia'
@@ -11,7 +23,8 @@ import HeaderComponent from './components/HeaderComponent.vue';
 export default {
 	name: 'App',
 	components: {
-		HeaderComponent
+		HeaderComponent,
+
 	},
 	methods: {
 		...mapActions(User, ['fetchUser'])
@@ -26,6 +39,11 @@ export default {
 </script>
 
 <style>
+body {
+	margin: 0;
+	padding: 0;
+}
+
 #app {
 	font-family: Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
