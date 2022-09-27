@@ -20,6 +20,10 @@ export default defineStore('user', {
 		},
 		unsetUser() {
 			this.user = null;
+		},
+		async logout() {
+			await supabase.auth.signOut()
+			this.unsetUser()
 		}
 	},
 	getters: {

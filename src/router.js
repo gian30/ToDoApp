@@ -12,7 +12,7 @@ const routes = [
 		meta: {
 			requiresNotAuth: true
 		},
-		component: () => import( /* webpackChunkName: 'index' */ './components/AuthComponent.vue')
+		component: () => import( /* webpackChunkName: 'index' */ './pages/LoginPage.vue')
 	},
 	{
 		path: '/',
@@ -20,7 +20,7 @@ const routes = [
 		meta: {
 			requiresAuth: true
 		},
-		component: () => import( /* webpackChunkName: 'index' */ './components/HomeComponent.vue')
+		component: () => import( /* webpackChunkName: 'index' */ './pages/TasksPage.vue')
 	},
 ];
 const router = createRouter({
