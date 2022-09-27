@@ -48,6 +48,7 @@ export default {
 				this.addTask()
 			}
 			this.closeDialog()
+			this.textareaValue = ''
 		},
 		async addTask() {
 			const task = {
