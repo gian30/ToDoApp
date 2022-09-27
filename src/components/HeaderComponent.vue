@@ -51,7 +51,7 @@ export default {
 <style>
 .logout {
 	display: block;
-	margin-left: auto;
+	margin: auto;
 	margin-top: 15px;
 }
 </style>
