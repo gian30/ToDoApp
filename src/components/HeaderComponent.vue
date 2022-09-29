@@ -39,6 +39,7 @@ export default {
 		...mapActions(User, ['logout']),
 		async logoutUser() {
 			await this.logout()
+			this.drawer = false
 			router.push('/auth')
 		}
 	},
