@@ -25,11 +25,13 @@ export default defineStore('tasks', {
 		},
 		async add(task) {
 			const newTask = await supabase.from('tasks').insert([task])
-			this.tasks.push(newTask[0])
+			if (newTask.data.length > 0) {
+				this.tasks.push(newTask)
+			}
 		},
 		async update(task, index) {
 			await supabase.from('tasks').update(task).eq('id', task.id)
-			this.tasks[index] = task	
+			this.tasks[index] = task
 		},
 		async remove(index) {
 			await supabase.from('tasks').delete().eq('id', this.tasks[index].id)
