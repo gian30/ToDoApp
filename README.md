@@ -7,6 +7,7 @@ npm install
 ```
 
 Create .env file in the projects root
+
 Fill .env file with your Supabase credentials:
 
 ```
