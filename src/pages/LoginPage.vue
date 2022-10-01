@@ -2,7 +2,7 @@
 	<form class="row flex-center flex" @submit.prevent="handleLogin">
 		<div class="col-6 form-widget">
 			<h1 class="header">{{!registerMode ? 'Log in' : 'Register'}}</h1>
-			<p class="description">Sign in via magic link with your email below</p>
+			<p class="description">Welcome to To Do App</p>
 			<div>
 				<el-input class="auth-input" type="email" placeholder="Your email" v-model="email" />
 				<el-input class="auth-input" type="password" placeholder="Your password" v-model="password" />
